@@ -92,8 +92,23 @@ class ElasticLoader:
         resp = self.es.msearch(body=request)
         return resp
 
+    def get_by_matches(self, l):  # не готово
+        body = {'multi_match': {}}
+        for key in l.keys():
+            for match in l[key]:
+                if key in body['multi_match']:
+                    body['multi_match'][key].append(match)
+                else:
+                    body['multi_match'][key] = [match]
+        body_ = dict()
+        body_['query'] = body
+        print(body)
+        res = self.es.search(body=body_)
+        return res
+
 
 elastic = ElasticLoader()
-print(elastic.search({'imports': ["python-telegram"], 'languages': ["c++", "python"], }))
+# print(elastic.search({'imports': ["python-telegram"], 'languages': ["c++", "python"], }))
 # elastic.delete_index('github')
 # elastic.create_index('data', 'github')
+print(elastic.get_by_matches({"languages": ["cpp", "python"]}))
