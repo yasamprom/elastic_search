@@ -1,0 +1,1 @@
+{"name": "system-design-primer", "languages": ["Python", "Shell"], "percentages": ["95.8", "4.1"], "imports": ["mrjob job MRJob", "enum Enum", "sys", "abc ABCMeta", "collections deque", "abc ABCMeta abstractmethod"]}
