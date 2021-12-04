@@ -92,23 +92,44 @@ class ElasticLoader:
         resp = self.es.msearch(body=request)
         return resp
 
-    def get_by_matches(self, l):  # не готово
-        body = {'multi_match': {}}
-        for key in l.keys():
-            for match in l[key]:
-                if key in body['multi_match']:
-                    body['multi_match'][key].append(match)
-                else:
-                    body['multi_match'][key] = [match]
-        body_ = dict()
-        body_['query'] = body
+    def get_by_multi_match(self, query, op="AND", cnt=1, fields=None):
+        # query: line for search
+        # op: {"AND", "OR"} (match in fields intersection or no)
+        if fields is None:
+            fields = ["name"
+                      "languages",
+                      "imports",
+                      "readmi"]
+        body = {
+                "query": {
+                    "bool": {
+                        "should": [
+                            {
+                                "multi_match": {
+                                    "query": query,
+                                    "fields": fields,
+                                    "type": "cross_fields",
+                                    "operator": op
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
         print(body)
-        res = self.es.search(body=body_)
-        return res
+        res = self.es.search(body=body)
+        array = []
+        # print(cnt, min(cnt, len(res['hits']['hits'])))
+        for i in range(min(cnt, len(res['hits']['hits']))):
+            array.append(res['hits']['hits'][i]['_source'])
+        return array
+
+
+''' EXAMPLE OF USAGE'''
 
 
 elastic = ElasticLoader()
 # print(elastic.search({'imports': ["python-telegram"], 'languages': ["c++", "python"], }))
 # elastic.delete_index('github')
 # elastic.create_index('data', 'github')
-print(elastic.get_by_matches({"languages": ["cpp", "python"]}))
+print(elastic.get_by_multi_match("python artifact_utils", "AND", 2))
