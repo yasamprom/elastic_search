@@ -2,6 +2,7 @@ import json
 import os
 from elasticsearch import Elasticsearch
 from elasticsearch import exceptions as elasticerrors
+from multipledispatch import dispatch
 
 
 class ElasticLoader:
@@ -14,24 +15,18 @@ class ElasticLoader:
             print("Connection failed")
             exit()
 
-    def create_index(self, directory='.', index=index_, doc_type=None, ind=1):
-        # mapping = {'mappings': {'properties': {
-        # 'name': {'type': 'keyword'},
-        # 'languages': {'type': 'keyword'},
-        # 'percentages': {'type': 'keyword'},
-        # 'imports': {'type': 'text'}
-        # }}}
+    def create_index(self, index=index_, doc_type=None, ind=1, directory='.'):
         try:
             self.es.indices.create(index=index)
-            for filename in os.listdir(directory):
-                path = os.path.join('data', filename)
-                if filename.endswith('.json'):
+            for file in os.listdir(directory):
+                if file.endswith('.json'):
+                    path = directory + '/' + file
                     doc = json.load(open(path))
                     self.add_by_json(d=doc, index=index, doc_type=doc_type, id_=ind)
                     ind += 1
         except elasticerrors.ElasticsearchException:
             print("Index already exists")
-            exit()
+            return
 
     @staticmethod
     def get_json(url):
@@ -92,44 +87,86 @@ class ElasticLoader:
         resp = self.es.msearch(body=request)
         return resp
 
-    def get_by_multi_match(self, query, op="AND", cnt=1, fields=None):
-        # query: line for search
+    @dispatch(dict)
+    def get_by_multi_match(self, d: dict) -> list:
+        """
+            Search by query as in elasticsearch
+            Documentation: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-your-data.html
+
+            :param d: elastic_search-like python dictionary with query
+            :param cnt: number of elements you want to get
+            :return: python dictionary of found elements
+        """
+        try:
+            res = self.es.search(body=d)
+            array = []
+            for i in range(len(res['hits']['hits'])):
+                array.append(res['hits']['hits'][i]['_source'])
+            return array
+        except elasticerrors.ElasticsearchException:
+            print("Something is wrong with your query")
+            exit()
+
+    @dispatch(list, list)
+    def get_by_multi_match(self, pairs_must: list, pairs_must_not: list):
+        """
+            Searching by list of pairs must: [[field_1, value_1], ...]
+                                    must_not: [[field_1, value_1], ...]
+        """
+        # d: line for search
         # op: {"AND", "OR"} (match in fields intersection or no)
-        if fields is None:
-            fields = ["name"
-                      "languages",
-                      "imports",
-                      "readmi"]
+        if pairs_must is None:
+            raise ValueError('empty query')
+
         body = {
-                "query": {
-                    "bool": {
-                        "should": [
-                            {
-                                "multi_match": {
-                                    "query": query,
-                                    "fields": fields,
-                                    "type": "cross_fields",
-                                    "operator": op
-                                }
-                            }
-                        ]
-                    }
+            "query": {
+                "bool": {
+                    "must": [],
+                    "must_not": []
                 }
             }
+        }
+        for p in pairs_must:
+            sub_dict = {'fields': [p[0]],
+                        'query': p[1],
+                        "type": "cross_fields",
+                        "operator": "AND"
+                        }
+            print(sub_dict)
+            body["query"]["bool"]["must"].append({
+                'multi_match': sub_dict
+                }
+            )
+        for p in pairs_must_not:
+            sub_dict = {'fields': [p[0]],
+                        'query': p[1],
+                        "type": "cross_fields",
+                        "operator": "AND"
+                        }
+            print(sub_dict)
+            body["query"]["bool"]["must_not"].append({
+                'multi_match': sub_dict
+                }
+            )
+        # bool : should : match languages : "....", match imports : "....", ...
         print(body)
         res = self.es.search(body=body)
         array = []
-        # print(cnt, min(cnt, len(res['hits']['hits'])))
-        for i in range(min(cnt, len(res['hits']['hits']))):
+        print(max(0, len(res['hits']['hits'])))
+        for i in range(max(0, len(res['hits']['hits']))):
             array.append(res['hits']['hits'][i]['_source'])
         return array
 
 
-''' EXAMPLE OF USAGE'''
-
-
 elastic = ElasticLoader()
-# print(elastic.search({'imports': ["python-telegram"], 'languages': ["c++", "python"], }))
-# elastic.delete_index('github')
-# elastic.create_index('data', 'github')
-print(elastic.get_by_multi_match("python artifact_utils", "AND", 2))
+# elastic.create_index()
+list_must = [['languages', "python"], ["imports", "MRjob"]]
+list_must_not = []
+
+print(elastic.get_by_multi_match(list_must, list_must_not))
+# must
+#    lang : ....
+#    imports : ...
+# must_not:
+#   langs : ....
+#   imports: ....
