@@ -1,21 +1,39 @@
 import json
 import os
 from elasticsearch import Elasticsearch
-from elasticsearch import exceptions as elasticerrors
+from elasticsearch import exceptions as errors
 from multipledispatch import dispatch
 
 
 class ElasticLoader:
+    """
+        ElasticLoader provides functionality for creating an index and searching through it using the Elastic Search API
+        By default, the index is called similar_projects, it is stored in the index_ value
+    """
+
     index_ = "similar_projects"
 
     def __init__(self, host="http://localhost", port=9200):
-        try:
-            self.es = Elasticsearch(HOST=host, PORT=port)
-        except RuntimeError:
-            print("Connection failed")
+        """
+            Connecting to the elastic search server using your own host and port
+            By default, it is connected locally to http://localhost:9200
+        """
+
+        self.es = Elasticsearch(HOST=host, PORT=port)
+        if not self.es.ping():
+            print("Connection to " + host + ":" + str(port) + " failed")
             exit()
 
     def create_index(self, index=index_, doc_type=None, ind=1, directory='.'):
+        """
+            Simply creates an index using json files
+
+        :param index: the name of index
+        :param doc_type: the doc_type of elements
+        :param ind: the the number for indexing elements (first : ind, second : ind + 1, etc.)
+        :param directory: path to json files (will use all files ended with .json, be careful)
+        """
+
         try:
             self.es.indices.create(index=index)
             for file in os.listdir(directory):
@@ -24,16 +42,24 @@ class ElasticLoader:
                     doc = json.load(open(path))
                     self.add_by_json(d=doc, index=index, doc_type=doc_type, id_=ind)
                     ind += 1
-        except elasticerrors.ElasticsearchException:
-            print("Index already exists")
+        except errors.RequestError:
+            print("Index " + self.index_ + " already exists")
             return
 
     @staticmethod
     def get_json(url):
         return {}
 
-    def add_by_json(self, d, index=index_, doc_type=None,
-                    id_=None):  # requires dictionary with description of repository
+    def add_by_json(self, d, index=index_, doc_type=None, id_=None):
+        """
+            Adds and element to the index using json (python dict) file
+
+        :param d: python dict with description of element for index
+        :param index: the name of index
+        :param doc_type: the doc_type of elements
+        :param id_: unique id for the element
+        """
+
         self.es.index(index=index, doc_type=doc_type, id=id_, document=d)
 
     def add_by_url(self, url):
@@ -51,22 +77,37 @@ class ElasticLoader:
     def pop(self, id_):
         pass
 
-    def get(self):  # parameters ???
+    def get(self):
         pass
 
     def delete_index(self, index=index_):
+        """
+            Deletes the index
+
+        :param index: the name of index
+        """
+
         try:
-            if input(("Delete index? Y/n: ")) == "Y":
+            if input(("Delete " + index + " index? Y/n: ")) == "Y":
                 self.es.indices.delete(index=index)
-        except elasticerrors.NotFoundError:
-            print("Index does not exist")
+        except errors.NotFoundError:
+            print("Index " + index + " does not exist")
             exit()
 
-    def update_index(self, index=index_, doc_type=None, start=1, path='.'):
-        self.delete_index(index=index)
-        self.create_index(index=index, doc_type=doc_type, start=start, path=path)
+    def update_index(self, index=index_, doc_type=None, ind=1, directory='.'):
+        """
+            Combination of delete and create functions
 
-    def search(self, d, index='github', limit=3):
+        :param index: the name of index
+        :param doc_type: the doc_type of elements
+        :param ind: the the number for indexing elements (first : ind, second : ind + 1, etc.)
+        :param directory: path to json files (will use all files ended with .json, be careful)
+        """
+
+        self.delete_index(index=index)
+        self.create_index(index=index, doc_type=doc_type, ind=ind, directory=directory)
+
+    def search(self, d, index=index_, limit=3):
         search_arr = list()
 
         if 'languages' in d.keys():
@@ -92,29 +133,33 @@ class ElasticLoader:
         """
             Search by query as in elasticsearch
             Documentation: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-your-data.html
-
-            :param d: elastic_search-like python dictionary with query
-            :param cnt: number of elements you want to get
-            :return: python dictionary of found elements
+        :param d: elastic_search-like python dictionary with query
+        :param cnt: number of elements you want to get
+        :return: python dictionary of found elements
         """
+
         try:
             res = self.es.search(body=d)
             array = []
             for i in range(len(res['hits']['hits'])):
                 array.append(res['hits']['hits'][i]['_source'])
             return array
-        except elasticerrors.ElasticsearchException:
+        except errors.ElasticsearchException:
             print("Something is wrong with your query")
             exit()
 
     @dispatch(list, list)
     def get_by_multi_match(self, pairs_must: list, pairs_must_not: list):
         """
-            Searching by list of pairs must: [[field_1, value_1], ...]
-                                    must_not: [[field_1, value_1], ...]
+            Searching by list of pairs
+
+        :param pairs_must: [field_1, value_1], ...] means field_i must be value_i
+        :param pairs_must_not: [[field_1, value_1], ...] means filed_i must not be value_i
+        :return: python dictionary of found elements
         """
         # d: line for search
         # op: {"AND", "OR"} (match in fields intersection or no)
+
         if pairs_must is None:
             raise ValueError('empty query')
 
@@ -148,7 +193,6 @@ class ElasticLoader:
                 'multi_match': sub_dict
                 }
             )
-        # bool : should : match languages : "....", match imports : "....", ...
         print(body)
         res = self.es.search(body=body)
         array = []
@@ -158,15 +202,8 @@ class ElasticLoader:
         return array
 
 
-elastic = ElasticLoader()
-# elastic.create_index()
-list_must = [['languages', "python"], ["imports", "MRjob"]]
-list_must_not = []
-
-print(elastic.get_by_multi_match(list_must, list_must_not))
-# must
-#    lang : ....
-#    imports : ...
-# must_not:
-#   langs : ....
-#   imports: ....
+#elastic = ElasticLoader()
+#elastic.create_index(directory='./data')
+#list_must = [['languages', "python"]]
+#list_must_not = []
+#print(elastic.get_by_multi_match(list_must, list_must_not))
