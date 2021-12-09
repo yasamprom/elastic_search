@@ -11,7 +11,7 @@ class ElasticLoader:
         By default, the index is called similar_projects, it is stored in the index_ value
     """
 
-    index_ = "similar_projects"
+    # index_ = "similar_projects"
 
     def __init__(self, host="http://localhost", port=9200):
         """
@@ -24,7 +24,7 @@ class ElasticLoader:
             print("Connection to " + host + ":" + str(port) + " failed")
             exit()
 
-    def create_index(self, index=index_, doc_type=None, ind=1, directory='.'):
+    def create_index(self, index, doc_type=None, ind=1, directory='.'):
         """
             Simply creates an index using json files
 
@@ -33,24 +33,27 @@ class ElasticLoader:
         :param ind: the the number for indexing elements (first : ind, second : ind + 1, etc.)
         :param directory: path to json files (will use all files ended with .json, be careful)
         """
-
+        cnt = 0
         try:
             self.es.indices.create(index=index)
             for file in os.listdir(directory):
                 if file.endswith('.json'):
                     path = directory + '/' + file
                     doc = json.load(open(path))
+                    if cnt == 0:
+                        print(doc)
+                        cnt = 1
                     self.add_by_json(d=doc, index=index, doc_type=doc_type, id_=ind)
                     ind += 1
         except errors.RequestError:
-            print("Index " + self.index_ + " already exists")
+            print("Index " + index + " already exists")
             return
 
     @staticmethod
     def get_json(url):
         return {}
 
-    def add_by_json(self, d, index=index_, doc_type=None, id_=None):
+    def add_by_json(self, d, index, doc_type=None, id_=None):
         """
             Adds and element to the index using json (python dict) file
 
@@ -80,7 +83,7 @@ class ElasticLoader:
     def get(self):
         pass
 
-    def delete_index(self, index=index_):
+    def delete_index(self, index):
         """
             Deletes the index
 
@@ -94,7 +97,7 @@ class ElasticLoader:
             print("Index " + index + " does not exist")
             exit()
 
-    def update_index(self, index=index_, doc_type=None, ind=1, directory='.'):
+    def update_index(self, index, doc_type=None, ind=1, directory='.'):
         """
             Combination of delete and create functions
 
@@ -107,7 +110,7 @@ class ElasticLoader:
         self.delete_index(index=index)
         self.create_index(index=index, doc_type=doc_type, ind=ind, directory=directory)
 
-    def search(self, d, index=index_, limit=3):
+    def search(self, d, index, limit=3):
         search_arr = list()
 
         if 'languages' in d.keys():
@@ -148,8 +151,8 @@ class ElasticLoader:
             print("Something is wrong with your query")
             exit()
 
-    @dispatch(list, list)
-    def get_by_multi_match(self, pairs_must: list, pairs_must_not: list):
+    @dispatch(str, list, list)
+    def get_by_multi_match(self, index, pairs_must: list, pairs_must_not: list):
         """
             Searching by list of pairs
 
@@ -177,7 +180,7 @@ class ElasticLoader:
                         "type": "cross_fields",
                         "operator": "AND"
                         }
-            print(sub_dict)
+            # print(sub_dict)
             body["query"]["bool"]["must"].append({
                 'multi_match': sub_dict
                 }
@@ -188,7 +191,7 @@ class ElasticLoader:
                         "type": "cross_fields",
                         "operator": "AND"
                         }
-            print(sub_dict)
+            # print(sub_dict)
             body["query"]["bool"]["must_not"].append({
                 'multi_match': sub_dict
                 }
@@ -196,14 +199,51 @@ class ElasticLoader:
         print(body)
         res = self.es.search(body=body)
         array = []
-        print(max(0, len(res['hits']['hits'])))
+
         for i in range(max(0, len(res['hits']['hits']))):
-            array.append(res['hits']['hits'][i]['_source'])
+            array.append(res['hits']['hits'][i]['_source']['repo_name:'])
         return array
 
 
-#elastic = ElasticLoader()
-#elastic.create_index(directory='./data')
-#list_must = [['languages', "python"]]
-#list_must_not = []
-#print(elastic.get_by_multi_match(list_must, list_must_not))
+elastic = ElasticLoader()
+index_name = 'test_index'
+elastic.create_index(index=index_name, directory='./JSONs')
+# list_must = [['languages', "python"], ['languages', 'shell'], ['languages', 'Makefile']]
+# list_must_not = []
+# print(elastic.get_by_multi_match(list_must, list_must_not))
+
+
+qm1 = [['languages', 'python']]
+qmn1 = []
+print(str(qm1))
+print(str(qmn1))
+print(elastic.get_by_multi_match(index_name, qm1, qmn1), '\n\n\n')
+
+qm2 = [['languages', 'python'], ['languages', 'shell']]
+qmn2 = []
+print(str(qm2))
+print(str(qmn2))
+print(elastic.get_by_multi_match(index_name, qm2, qmn2), '\n\n\n')
+
+qm4 = [['languages', 'python'], ['languages', 'shell']]
+qmn4 = [['languages', 'Makefile']]
+print(str(qm4))
+print(str(qmn4))
+print(elastic.get_by_multi_match(index_name, qm4, qmn4), '\n\n\n')
+
+qm3 = [['languages', 'python'], ['languages', 'shell']]
+qmn3 = [['languages', 'python'], ['languages', 'shell']]
+print(str(qm3))
+print(str(qmn3))
+print(elastic.get_by_multi_match(index_name, qm3, qmn3), '\n\n\n')
+
+qm1 = [['imports', 'base64']]
+qmn1 = [['languages', 'shell']]
+print(str(qm1))
+print(str(qmn1))
+print(elastic.get_by_multi_match(index_name, qm1, qmn1), '\n\n\n')
+
+
+print("query with dict")
+q = {'query': {'bool': {'must': [{'multi_match': {'fields': ['imports'], 'query': 'base64', 'type': 'cross_fields', 'operator': 'AND'}}], 'must_not': [{'multi_match': {'fields': ['languages'], 'query': 'shell', 'type': 'cross_fields', 'operator': 'AND'}}]}}}
+print(elastic.get_by_multi_match(q))
