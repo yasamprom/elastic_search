@@ -4,6 +4,9 @@ from elasticsearch import Elasticsearch
 from elasticsearch import exceptions as errors
 from multipledispatch import dispatch
 
+import warnings
+warnings.filterwarnings("ignore")        # Разумеется, это временно
+
 
 class ElasticLoader:
     """
@@ -212,38 +215,93 @@ elastic.create_index(index=index_name, directory='./JSONs')
 # list_must_not = []
 # print(elastic.get_by_multi_match(list_must, list_must_not))
 
+# print("One match")
+# qm1 = [['languages', 'python'], ['imports', 'monkeytype noneType']]
+# qmn1 = []
+# print(str(qm1))
+# print(str(qmn1))
+# print(elastic.get_by_multi_match(index_name, qm1, qmn1), '\n\n\n')
 
+
+print("One match")
 qm1 = [['languages', 'python']]
 qmn1 = []
 print(str(qm1))
 print(str(qmn1))
-print(elastic.get_by_multi_match(index_name, qm1, qmn1), '\n\n\n')
+print('\n'.join(elastic.get_by_multi_match(index_name, qm1, qmn1)), '\n\n\n')
 
+print("Two matches")
 qm2 = [['languages', 'python'], ['languages', 'shell']]
 qmn2 = []
 print(str(qm2))
 print(str(qmn2))
-print(elastic.get_by_multi_match(index_name, qm2, qmn2), '\n\n\n')
+print('\n'.join(elastic.get_by_multi_match(index_name, qm2, qmn2)), '\n\n\n')
 
+print("Two matches with MUST_NOT var.")
 qm4 = [['languages', 'python'], ['languages', 'shell']]
 qmn4 = [['languages', 'Makefile']]
 print(str(qm4))
 print(str(qmn4))
-print(elastic.get_by_multi_match(index_name, qm4, qmn4), '\n\n\n')
+print('\n'.join(elastic.get_by_multi_match(index_name, qm4, qmn4)), '\n\n\n')
 
+print("Three matches with MUST_NOT var.")
+qm4 = [['languages', 'python'], ['languages', 'shell'], ['languages', 'javascript']]
+qmn4 = [['languages', 'Makefile']]
+print(str(qm4))
+print(str(qmn4))
+print('\n'.join(elastic.get_by_multi_match(index_name, qm4, qmn4)), '\n\n\n')
+
+print("MUST is equal MUST_NOT")
 qm3 = [['languages', 'python'], ['languages', 'shell']]
 qmn3 = [['languages', 'python'], ['languages', 'shell']]
 print(str(qm3))
 print(str(qmn3))
-print(elastic.get_by_multi_match(index_name, qm3, qmn3), '\n\n\n')
+print('\n'.join(elastic.get_by_multi_match(index_name, qm3, qmn3)), '\n\n\n')
 
+print("Three matches")
+qm5 = [['languages', 'python'], ['languages', 'shell'], ['imports', 'requests']]
+qmn5 = []
+print(str(qm5))
+print(str(qmn5))
+print('\n'.join(elastic.get_by_multi_match(index_name, qm5, qmn5)), '\n\n\n')
+
+print('Two matches, exact string')
+qm5 = [['languages', 'python'], ['imports', 'cola functions counter CounterServer']]
+qmn5 = []
+print(str(qm5))
+print(str(qmn5))
+print('\n'.join(elastic.get_by_multi_match(index_name, qm5, qmn5)), '\n\n\n')
+
+print('Two matches, not exact string')
+qm5 = [['languages', 'python'], ['imports', 'cola CounterServer']]
+qmn5 = []
+print(str(qm5))
+print(str(qmn5))
+print('\n'.join(elastic.get_by_multi_match(index_name, qm5, qmn5)), '\n\n\n')
+
+print('Three matches, not exact string')
+qm5 = [['languages', 'python'], ['imports', 'monkeytype nonetype']]
+qmn5 = []
+print(str(qm5))
+print(str(qmn5))
+print('\n'.join(elastic.get_by_multi_match(index_name, qm5, qmn5)), '\n\n\n')
+
+print('Three matches, not exact (bad) string')
+qm5 = [['languages', 'python'], ['imports', 'monkeyType Nonetype']]
+qmn5 = []
+print(str(qm5))
+print(str(qmn5))
+print('\n'.join(elastic.get_by_multi_match(index_name, qm5, qmn5)), '\n\n\n')
+
+
+print("Simple MUST and MUST_NOT")
 qm1 = [['imports', 'base64']]
 qmn1 = [['languages', 'shell']]
 print(str(qm1))
 print(str(qmn1))
-print(elastic.get_by_multi_match(index_name, qm1, qmn1), '\n\n\n')
-
+print('\n'.join(elastic.get_by_multi_match(index_name, qm1, qmn1)), '\n\n\n')
 
 print("query with dict")
 q = {'query': {'bool': {'must': [{'multi_match': {'fields': ['imports'], 'query': 'base64', 'type': 'cross_fields', 'operator': 'AND'}}], 'must_not': [{'multi_match': {'fields': ['languages'], 'query': 'shell', 'type': 'cross_fields', 'operator': 'AND'}}]}}}
+print(q)
 print(elastic.get_by_multi_match(q))

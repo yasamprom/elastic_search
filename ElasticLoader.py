@@ -2,6 +2,7 @@ from elasticsearch import Elasticsearch
 import os
 import json
 
+
 class ElasticLoader:
     def __init__(self, host="http://localhost", port=9200):
         try:

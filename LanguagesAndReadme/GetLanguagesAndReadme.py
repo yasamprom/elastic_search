@@ -9,7 +9,7 @@ def get_languages_and_readme(path, k=1):
     :return: list of two elements, first is list of pairs [rate, language] of no more than k most popular languages;
     second is list of readmes content
     """
-    cur_path = os.path.abspath(os.getcwd()) + "/pfsp/LanguagesAndReadme"
+    cur_path = os.path.abspath(os.getcwd()) + "/LanguagesAndReadme"
     cmd = cur_path + "/enry -all -doc -breakdown " + path
     p = subprocess.Popen(cmd, shell=True, universal_newlines=True,
                          stdout=subprocess.PIPE, stderr=subprocess.STDOUT)

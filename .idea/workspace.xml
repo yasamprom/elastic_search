@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="dcaa6710-a410-438c-aabc-d10b15091b59" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/CodeData/GetDocstrings.py" beforeDir="false" afterPath="$PROJECT_DIR$/CodeData/GetDocstrings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeData/GetImports.py" beforeDir="false" afterPath="$PROJECT_DIR$/CodeData/GetImports.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeData/GetNames.py" beforeDir="false" afterPath="$PROJECT_DIR$/CodeData/GetNames.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ElasticLoader.py" beforeDir="false" afterPath="$PROJECT_DIR$/ElasticLoader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GetJSON.py" beforeDir="false" afterPath="$PROJECT_DIR$/GetJSON.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LanguagesAndReadme/GetLanguagesAndReadme.py" beforeDir="false" afterPath="$PROJECT_DIR$/LanguagesAndReadme/GetLanguagesAndReadme.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/graphviz.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/graphviz.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="21Gzy6ye83Dj8LaenuHCo6sIFNH" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/data" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.test">
+    <configuration name="ElasticLoader" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="similar_projects" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ElasticLoader.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="elastic" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="similar_projects" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/elastic.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="similar_projects" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="similar_projects" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.test" />
+        <item itemvalue="Python.ElasticLoader" />
+        <item itemvalue="Python.elastic" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="dcaa6710-a410-438c-aabc-d10b15091b59" name="Default Changelist" comment="" />
+      <created>1637582464243</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1637582464243</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state width="1419" height="303" key="GridCell.Tab.0.bottom" timestamp="1642603900513">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="1419" height="303" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1642603900513" />
+    <state width="1419" height="304" key="GridCell.Tab.0.bottom/0.23.1440.822@0.23.1440.822" timestamp="1638737078079" />
+    <state width="1419" height="212" key="GridCell.Tab.0.bottom/0.23.1440.823@0.23.1440.823" timestamp="1637584172430" />
+    <state width="1419" height="212" key="GridCell.Tab.0.bottom/0.23.1440.825@0.23.1440.825" timestamp="1637584414628" />
+    <state width="1419" height="212" key="GridCell.Tab.0.bottom/0.23.1440.826@0.23.1440.826" timestamp="1637584906578" />
+    <state width="1419" height="206" key="GridCell.Tab.0.bottom/0.25.1440.814@0.25.1440.814" timestamp="1639002798014" />
+    <state width="1419" height="266" key="GridCell.Tab.0.bottom/0.25.1440.817@0.25.1440.817" timestamp="1639013064649" />
+    <state width="1419" height="294" key="GridCell.Tab.0.bottom/0.25.1440.818@0.25.1440.818" timestamp="1639041253328" />
+    <state width="1419" height="258" key="GridCell.Tab.0.bottom/0.25.1440.826@0.25.1440.826" timestamp="1639503842909" />
+    <state width="1419" height="303" key="GridCell.Tab.0.center" timestamp="1642603900512">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="1419" height="303" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1642603900512" />
+    <state width="1419" height="304" key="GridCell.Tab.0.center/0.23.1440.822@0.23.1440.822" timestamp="1638737078078" />
+    <state width="1419" height="212" key="GridCell.Tab.0.center/0.23.1440.823@0.23.1440.823" timestamp="1637584172429" />
+    <state width="1419" height="212" key="GridCell.Tab.0.center/0.23.1440.825@0.23.1440.825" timestamp="1637584414627" />
+    <state width="1419" height="212" key="GridCell.Tab.0.center/0.23.1440.826@0.23.1440.826" timestamp="1637584906578" />
+    <state width="1419" height="206" key="GridCell.Tab.0.center/0.25.1440.814@0.25.1440.814" timestamp="1639002798013" />
+    <state width="1419" height="266" key="GridCell.Tab.0.center/0.25.1440.817@0.25.1440.817" timestamp="1639013064648" />
+    <state width="1419" height="294" key="GridCell.Tab.0.center/0.25.1440.818@0.25.1440.818" timestamp="1639041253327" />
+    <state width="1419" height="258" key="GridCell.Tab.0.center/0.25.1440.826@0.25.1440.826" timestamp="1639503842908" />
+    <state width="1419" height="303" key="GridCell.Tab.0.left" timestamp="1642603900511">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="1419" height="303" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1642603900511" />
+    <state width="1419" height="304" key="GridCell.Tab.0.left/0.23.1440.822@0.23.1440.822" timestamp="1638737078078" />
+    <state width="1419" height="212" key="GridCell.Tab.0.left/0.23.1440.823@0.23.1440.823" timestamp="1637584172429" />
+    <state width="1419" height="212" key="GridCell.Tab.0.left/0.23.1440.825@0.23.1440.825" timestamp="1637584414627" />
+    <state width="1419" height="212" key="GridCell.Tab.0.left/0.23.1440.826@0.23.1440.826" timestamp="1637584906577" />
+    <state width="1419" height="206" key="GridCell.Tab.0.left/0.25.1440.814@0.25.1440.814" timestamp="1639002798012" />
+    <state width="1419" height="266" key="GridCell.Tab.0.left/0.25.1440.817@0.25.1440.817" timestamp="1639013064648" />
+    <state width="1419" height="294" key="GridCell.Tab.0.left/0.25.1440.818@0.25.1440.818" timestamp="1639041253327" />
+    <state width="1419" height="258" key="GridCell.Tab.0.left/0.25.1440.826@0.25.1440.826" timestamp="1639503842908" />
+    <state width="1419" height="303" key="GridCell.Tab.0.right" timestamp="1642603900512">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="1419" height="303" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1642603900512" />
+    <state width="1419" height="304" key="GridCell.Tab.0.right/0.23.1440.822@0.23.1440.822" timestamp="1638737078079" />
+    <state width="1419" height="212" key="GridCell.Tab.0.right/0.23.1440.823@0.23.1440.823" timestamp="1637584172430" />
+    <state width="1419" height="212" key="GridCell.Tab.0.right/0.23.1440.825@0.23.1440.825" timestamp="1637584414627" />
+    <state width="1419" height="212" key="GridCell.Tab.0.right/0.23.1440.826@0.23.1440.826" timestamp="1637584906578" />
+    <state width="1419" height="206" key="GridCell.Tab.0.right/0.25.1440.814@0.25.1440.814" timestamp="1639002798013" />
+    <state width="1419" height="266" key="GridCell.Tab.0.right/0.25.1440.817@0.25.1440.817" timestamp="1639013064648" />
+    <state width="1419" height="294" key="GridCell.Tab.0.right/0.25.1440.818@0.25.1440.818" timestamp="1639041253328" />
+    <state width="1419" height="258" key="GridCell.Tab.0.right/0.25.1440.826@0.25.1440.826" timestamp="1639503842909" />
+    <state width="1419" height="303" key="GridCell.Tab.1.bottom" timestamp="1642603900514">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="1419" height="303" key="GridCell.Tab.1.bottom/0.0.1440.900@0.0.1440.900" timestamp="1642603900514" />
+    <state width="1419" height="304" key="GridCell.Tab.1.bottom/0.23.1440.822@0.23.1440.822" timestamp="1638737078082" />
+    <state width="1419" height="258" key="GridCell.Tab.1.bottom/0.25.1440.814@0.25.1440.814" timestamp="1638902672125" />
+    <state width="1419" height="258" key="GridCell.Tab.1.bottom/0.25.1440.826@0.25.1440.826" timestamp="1639503842912" />
+    <state width="1419" height="303" key="GridCell.Tab.1.center" timestamp="1642603900513">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="1419" height="303" key="GridCell.Tab.1.center/0.0.1440.900@0.0.1440.900" timestamp="1642603900513" />
+    <state width="1419" height="304" key="GridCell.Tab.1.center/0.23.1440.822@0.23.1440.822" timestamp="1638737078081" />
+    <state width="1419" height="258" key="GridCell.Tab.1.center/0.25.1440.814@0.25.1440.814" timestamp="1638902672125" />
+    <state width="1419" height="258" key="GridCell.Tab.1.center/0.25.1440.826@0.25.1440.826" timestamp="1639503842910" />
+    <state width="1419" height="303" key="GridCell.Tab.1.left" timestamp="1642603900513">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="1419" height="303" key="GridCell.Tab.1.left/0.0.1440.900@0.0.1440.900" timestamp="1642603900513" />
+    <state width="1419" height="304" key="GridCell.Tab.1.left/0.23.1440.822@0.23.1440.822" timestamp="1638737078080" />
+    <state width="1419" height="258" key="GridCell.Tab.1.left/0.25.1440.814@0.25.1440.814" timestamp="1638902672124" />
+    <state width="1419" height="258" key="GridCell.Tab.1.left/0.25.1440.826@0.25.1440.826" timestamp="1639503842910" />
+    <state width="1419" height="303" key="GridCell.Tab.1.right" timestamp="1642603900514">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="1419" height="303" key="GridCell.Tab.1.right/0.0.1440.900@0.0.1440.900" timestamp="1642603900514" />
+    <state width="1419" height="304" key="GridCell.Tab.1.right/0.23.1440.822@0.23.1440.822" timestamp="1638737078081" />
+    <state width="1419" height="258" key="GridCell.Tab.1.right/0.25.1440.814@0.25.1440.814" timestamp="1638902672125" />
+    <state width="1419" height="258" key="GridCell.Tab.1.right/0.25.1440.826@0.25.1440.826" timestamp="1639503842911" />
+    <state x="229" y="89" key="SettingsEditor" timestamp="1638448248934">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="229" y="89" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1638448248934" />
+    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup" timestamp="1638362579490">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup/0.0.1440.900@0.0.1440.900" timestamp="1638362579490" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/test.py</url>
+          <line>2</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/GetJSON.py</url>
+          <line>72</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

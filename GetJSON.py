@@ -1,8 +1,8 @@
-from .CodeData import Utils
-from .LanguagesAndReadme import GetLanguagesAndReadme
-from .CodeData import GetImports
-from .CodeData import GetNames
-from .CodeData import GetDocstrings
+from CodeData import Utils
+from LanguagesAndReadme import GetLanguagesAndReadme
+from CodeData import GetImports
+from CodeData import GetNames
+from CodeData import GetDocstrings
 from threading import Thread
 import json
 import os
@@ -65,7 +65,6 @@ def get_json(path: str, as_url: bool = False):
     import_thread.start()
     name_thread.start()
     docstring_thread.start()
-
     [stats, readme] = lang_and_readme_thread.join()
     imports = import_thread.join()
     names = name_thread.join()
