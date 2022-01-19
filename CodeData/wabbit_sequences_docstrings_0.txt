@@ -1,0 +1,10 @@
+"""
+    :param one_param: smth about one_param
+    :param another_nice_param: kek
+    :return: ugu
+    """
+"""
+    :param path: the path of the project to define the main language for
+    :param k: desired amount of most popular languages
+    :return: list of pairs [rate, language] of no more than k most popular languages
+    """
