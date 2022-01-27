@@ -37,6 +37,7 @@ class ElasticLoader:
         :param directory: path to json files (will use all files ended with .json, be careful)
         """
         cnt = 0
+        # self.delete_index(index)
         try:
             self.es.indices.create(index=index)
             for file in os.listdir(directory):
@@ -199,18 +200,74 @@ class ElasticLoader:
                 'multi_match': sub_dict
                 }
             )
-        print(body)
-        res = self.es.search(body=body)
+        res = self.es.search(index=index, body=body)
         array = []
 
         for i in range(max(0, len(res['hits']['hits']))):
-            array.append(res['hits']['hits'][i]['_source']['repo_name:'])
+            if ('repo_name' in res['hits']['hits'][i]['_source']):
+                array.append(res['hits']['hits'][i]['_source']['repo_name'])
+        print("FOUND", len(array), "ANSWERS IN INDEX", index)
+        return array
+
+    def get_by_repo(self, index, pairs_should: list, pairs_must_not: list):
+        """
+            Searching by list of pairs
+
+        :param pairs_should: [field_1, value_1], ...] means field_i should be value_i
+        :param pairs_must_not: [[field_1, value_1], ...] means filed_i must not be value_i
+        :return: python dictionary of found elements
+        """
+        # d: line for search
+        # op: {"AND", "OR"} (match in fields intersection or no)
+
+        if pairs_should is None:
+            raise ValueError('empty query')
+
+        body = {
+            "query": {
+                "bool": {
+                    "should": [],
+                    "must_not": []
+                }
+            }
+        }
+        for p in pairs_should:
+            sub_dict = {'fields': [p[0]],
+                        'query': p[1],
+                        "type": "cross_fields",
+                        "operator": "AND"
+                        }
+            # print(sub_dict)
+            body["query"]["bool"]["should"].append({
+                'multi_match': sub_dict
+            }
+            )
+        for p in pairs_must_not:
+            sub_dict = {'fields': [p[0]],
+                        'query': p[1],
+                        "type": "cross_fields",
+                        "operator": "AND"
+                        }
+            # print(sub_dict)
+            body["query"]["bool"]["must_not"].append({
+                'multi_match': sub_dict
+            }
+            )
+        res = self.es.search(index=index, body=body)
+        array = []
+
+        for i in range(max(0, len(res['hits']['hits']))):
+            if 'repo_name' in res['hits']['hits'][i]['_source']:
+                array.append(res['hits']['hits'][i]['_source']['repo_name'])
+        print("FOUND", len(array), "ANSWERS IN INDEX", index)
         return array
 
 
 elastic = ElasticLoader()
-index_name = 'test_index'
-elastic.create_index(index=index_name, directory='./JSONs')
+index_name = 'test_index2'
+# elastic.delete_index(index='test_index2')
+# elastic.create_index(index=index_name, directory='jsons')
+
 # list_must = [['languages', "python"], ['languages', 'shell'], ['languages', 'Makefile']]
 # list_must_not = []
 # print(elastic.get_by_multi_match(list_must, list_must_not))
@@ -223,6 +280,7 @@ elastic.create_index(index=index_name, directory='./JSONs')
 # print(elastic.get_by_multi_match(index_name, qm1, qmn1), '\n\n\n')
 
 
+'''
 print("One match")
 qm1 = [['languages', 'python']]
 qmn1 = []
@@ -305,3 +363,83 @@ print("query with dict")
 q = {'query': {'bool': {'must': [{'multi_match': {'fields': ['imports'], 'query': 'base64', 'type': 'cross_fields', 'operator': 'AND'}}], 'must_not': [{'multi_match': {'fields': ['languages'], 'query': 'shell', 'type': 'cross_fields', 'operator': 'AND'}}]}}}
 print(q)
 print(elastic.get_by_multi_match(q))
+'''
+
+print("One match")
+qm1 = [['languages', 'python']]
+qmn1 = []
+print(str(qm1))
+print(str(qmn1))
+print('\n'.join(elastic.get_by_repo(index_name, qm1, qmn1)), '\n\n\n')
+
+print("Two matches")
+qm2 = [['languages', 'python'], ['languages', 'shell']]
+qmn2 = []
+print(str(qm2))
+print(str(qmn2))
+print('\n'.join(elastic.get_by_repo(index_name, qm2, qmn2)), '\n\n\n')
+
+print("Two matches with MUST_NOT var.")
+qm4 = [['languages', 'python'], ['languages', 'shell']]
+qmn4 = [['languages', 'Makefile']]
+print(str(qm4))
+print(str(qmn4))
+print('\n'.join(elastic.get_by_repo(index_name, qm4, qmn4)), '\n\n\n')
+
+print("Three matches with MUST_NOT var.")
+qm4 = [['languages', 'python'], ['languages', 'shell'], ['languages', 'javascript']]
+qmn4 = [['languages', 'Makefile']]
+print(str(qm4))
+print(str(qmn4))
+print('\n'.join(elastic.get_by_repo(index_name, qm4, qmn4)), '\n\n\n')
+
+print("MUST is equal MUST_NOT")
+qm3 = [['languages', 'python'], ['languages', 'shell']]
+qmn3 = [['languages', 'python'], ['languages', 'shell']]
+print(str(qm3))
+print(str(qmn3))
+print('\n'.join(elastic.get_by_repo(index_name, qm3, qmn3)), '\n\n\n')
+
+print("Three matches")
+qm5 = [['languages', 'python'], ['languages', 'shell'], ['imports', 'requests']]
+qmn5 = []
+print(str(qm5))
+print(str(qmn5))
+print('\n'.join(elastic.get_by_repo(index_name, qm5, qmn5)), '\n\n\n')
+
+print('Two matches, exact string')
+qm5 = [['languages', 'python'], ['imports', 'cola functions counter CounterServer']]
+qmn5 = []
+print(str(qm5))
+print(str(qmn5))
+print('\n'.join(elastic.get_by_repo(index_name, qm5, qmn5)), '\n\n\n')
+
+print('Two matches, not exact string')
+qm5 = [['languages', 'python'], ['imports', 'cola CounterServer']]
+qmn5 = []
+print(str(qm5))
+print(str(qmn5))
+print('\n'.join(elastic.get_by_repo(index_name, qm5, qmn5)), '\n\n\n')
+
+print('Three matches, not exact string')
+qm5 = [['languages', 'python'], ['imports', 'monkeytype nonetype']]
+qmn5 = []
+print(str(qm5))
+print(str(qmn5))
+print('\n'.join(elastic.get_by_repo(index_name, qm5, qmn5)), '\n\n\n')
+
+print('Three matches, not exact (bad) string')
+qm5 = [['languages', 'python'], ['imports', 'monkeyType Nonetype']]
+qmn5 = []
+print(str(qm5))
+print(str(qmn5))
+print('\n'.join(elastic.get_by_repo(index_name, qm5, qmn5)), '\n\n\n')
+
+
+print("Simple MUST and MUST_NOT")
+qm1 = [['imports', 'base64']]
+qmn1 = [['languages', 'shell']]
+print(str(qm1))
+print(str(qmn1))
+print('\n'.join(elastic.get_by_repo(index_name, qm1, qmn1)), '\n\n\n')
+
